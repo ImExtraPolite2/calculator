@@ -63,7 +63,7 @@ const populateDisplay = () => {
 
       } else if (numOfOperators > 1) {
         displayFirst = displayFirst + displaySecond;
-        console.log(displayFirst);
+        
       }
     });
   });
