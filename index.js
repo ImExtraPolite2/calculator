@@ -16,67 +16,85 @@ const division = (num1, num2) => {
 
 const operate = (num1, num2, operator) => {
   if (operator === '+') {
-    console.log(addition(num1, num2));
+    return addition(num1, num2);
   } else if (operator === '-') {
-    console.log(subtraction(num1, num2));
+    return subtraction(num1, num2);
   } else if (operator === '*') {
-    console.log(multiplication(num1, num2));
+    return multiplication(num1, num2);
   } else if (operator === '/') {
-    console.log(division(num1, num2));
-  } else {
-    console.log('Wrong operator!');
-  }
+    return division(num1, num2);
+  } 
 }
 
 const populateDisplay = () => {
   const allNumbers = document.querySelectorAll('.number-button');
   const allOperators = document.querySelectorAll('.operator-button');
   const equal = document.querySelector('.equal');
+  const display = document.querySelector('.display');
+  const period = document.querySelector('.period');
   let lengthAfterOperator = 0;
 
   allNumbers.forEach(number => {
     number.addEventListener('click', () => {
       expression += number.textContent;
+      display.textContent = expression;
     });
   });
+
+  period.addEventListener('click', () => {
+    expression += period.textContent;
+    display.textContent = expression;
+  })
 
   allOperators.forEach(operator => {
     operator.addEventListener('click', () => {
       expression += operator.textContent;
+      display.textContent = expression;
+      numOfOperators++;
 
-      if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/')) {
-        displayOperator.textContent = expression[expression.length - 1];
-        displayFirst.textContent = expression.substring(0, expression.length - 1);
+      if (numOfOperators === 1 || expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/')) {
+        displayOperator = expression[expression.length - 1];
+        displayFirst = expression.substring(0, expression.length - 1);
 
         for (let i = 0; i < expression.length; i++) {
           lengthAfterOperator++;
         }
+        // console.log(numOfOperators);
+
+      } else if (numOfOperators > 1) {
+        displayFirst = displayFirst + displaySecond;
+        console.log(displayFirst);
       }
     });
   });
 
   equal.addEventListener('click', () => {
-    displaySecond.textContent = expression.substring(lengthAfterOperator, expression.length);
-  })
+    displaySecond = expression.substring(lengthAfterOperator, expression.length);
+    display.textContent = operate(displayFirst, displaySecond, displayOperator);
+    lengthAfterOperator = 0;
+    numOfOperators = 0;
+  });
 
   clearDisplay();
 }
 
 const clearDisplay = () => {
   const clear = document.querySelector('.clear');
-  const display = document.querySelector('.display');
 
   clear.addEventListener('click', () => {
-    displayFirst.textContent = '';
-    displayOperator.textContent = '';
-    displaySecond.textContent = '';
+    const display = document.querySelector('.display');
+    displayFirst = '';
+    displayOperator = '';
+    displaySecond = '';
+    display.textContent = '';
     expression = '';
   });
 }
 
-
-const displayFirst = document.querySelector('.first-number');
-const displayOperator = document.querySelector('.operator');
-const displaySecond = document.querySelector('.second-number');
+let displayFirst;
+let displayOperator;
+let displaySecond;
+let sum;
+let numOfOperators = 0;
 let expression = '';
 populateDisplay();
