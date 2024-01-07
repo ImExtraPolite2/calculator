@@ -31,29 +31,33 @@ const operate = (num1, num2, operator) => {
 const populateDisplay = () => {
   const allNumbers = document.querySelectorAll('.number-button');
   const allOperators = document.querySelectorAll('.operator-button');
-  const displayFirst = document.querySelector('.first-number');
-  const displayOperator = document.querySelector('.operator');
-  const displaySecond = document.querySelector('second-number');
+  const equal = document.querySelector('.equal');
+  let lengthAfterOperator = 0;
 
   allNumbers.forEach(number => {
     number.addEventListener('click', () => {
       expression += number.textContent;
-      console.log(expression);
     });
   });
 
   allOperators.forEach(operator => {
     operator.addEventListener('click', () => {
       expression += operator.textContent;
-      console.log(expression);
+
+      if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/')) {
+        displayOperator.textContent = expression[expression.length - 1];
+        displayFirst.textContent = expression.substring(0, expression.length - 1);
+
+        for (let i = 0; i < expression.length; i++) {
+          lengthAfterOperator++;
+        }
+      }
     });
   });
 
-  if (expression.includes('+', '-', '/', '*')) {
-    console.log(true);
-  } else {
-    console.log(false);
-  }
+  equal.addEventListener('click', () => {
+    displaySecond.textContent = expression.substring(lengthAfterOperator, expression.length);
+  })
 
   clearDisplay();
 }
@@ -63,15 +67,16 @@ const clearDisplay = () => {
   const display = document.querySelector('.display');
 
   clear.addEventListener('click', () => {
+    displayFirst.textContent = '';
+    displayOperator.textContent = '';
+    displaySecond.textContent = '';
     expression = '';
   });
 }
 
+
+const displayFirst = document.querySelector('.first-number');
+const displayOperator = document.querySelector('.operator');
+const displaySecond = document.querySelector('.second-number');
 let expression = '';
 populateDisplay();
-
-// let firstNum = prompt('Enter first number: ');
-// let secondNum = prompt('Enter second number: ');
-// let operator = prompt('Enter operator: ');
-
-// operate(firstNum, secondNum, operator);
