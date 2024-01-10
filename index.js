@@ -50,20 +50,14 @@ const populateDisplay = () => {
     operator.addEventListener('click', () => {
       expression += operator.textContent;
       display.textContent = expression;
-      numOfOperators++;
 
-      if (numOfOperators === 1 || expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/')) {
+      if (expression.includes('+') || expression.includes('-') || expression.includes('*') || expression.includes('/')) {
         displayOperator = expression[expression.length - 1];
         displayFirst = expression.substring(0, expression.length - 1);
 
         for (let i = 0; i < expression.length; i++) {
           lengthAfterOperator++;
         }
-        // console.log(numOfOperators);
-
-      } else if (numOfOperators > 1) {
-        displayFirst = displayFirst + displaySecond;
-        
       }
     });
   });
@@ -72,7 +66,6 @@ const populateDisplay = () => {
     displaySecond = expression.substring(lengthAfterOperator, expression.length);
     display.textContent = operate(displayFirst, displaySecond, displayOperator);
     lengthAfterOperator = 0;
-    numOfOperators = 0;
   });
 
   clearDisplay();
@@ -95,6 +88,5 @@ let displayFirst;
 let displayOperator;
 let displaySecond;
 let sum;
-let numOfOperators = 0;
 let expression = '';
 populateDisplay();
